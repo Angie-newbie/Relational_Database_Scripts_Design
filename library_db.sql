@@ -29,11 +29,19 @@ create table books(
     id serial primary key,
     title varchar (100) not null,
     publisher varchar(100),
-    publish_date date
+    publish_date date,
+    authors_id int not null,
+    categories_id int not null,
+    foreign key (authors_id) references authors(id),
+    foreign key (categories_id) references categories(id) on delete set null
 );
 
 create table loans(
     id serial primary key,
     loan_date date not null,
-    due_date date not null
+    due_date date not null,
+    members_id int not null,
+    books_id int not null,
+    foreign key (members_id) references members(id),
+    foreign key (books_id) references books(id)
 );
