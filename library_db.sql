@@ -53,8 +53,6 @@ create table loans(
     foreign key (books_id) references books(id) on delete cascade
 );
 
-
-
 -- insert
 -- authors
 insert into authors (first_name, last_name)
@@ -83,7 +81,11 @@ values
 insert into books (title, publish_date, authors_id, categories_id, publishers_id)
 values
     ('The Catcher in the Rye', '1951-07-16', 1, 1, 1),
-    ('Harry Potter and the Chamber of Secrets', '1998-07-02', 2, 1, 2),
-    ('Fantastic Beasts and Where to Find Them', '2001-03-01', 1, 4, 3),
-    ('The Casual Vacancy', '2012-09-27', 1, 5, 1)
+    ('Harry Potter and the Chamber of Secrets', '1998-07-02', 2, 2, 2),
+    ('Fantastic Beasts and Where to Find Them', '2001-03-01', 2, 4, 3),
+    ('The Casual Vacancy', '2012-09-27', 2, 5, 1)
     ;
+
+
+-- count
+select count(id) from books;
