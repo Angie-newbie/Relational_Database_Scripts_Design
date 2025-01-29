@@ -42,6 +42,6 @@ create table loans(
     due_date date not null,
     members_id int not null,
     books_id int not null,
-    foreign key (members_id) references members(id),
-    foreign key (books_id) references books(id)
+    foreign key (members_id) references members(id) on delete set null,
+    foreign key (books_id) references books(id) on delete cascade
 );
