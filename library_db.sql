@@ -58,7 +58,9 @@ create table loans(
 insert into authors (first_name, last_name)
 values
     ('J.D.', 'Salinger'),
-    ('J.K.', 'Rowling');
+    ('J.K.', 'Rowling'),
+    ('Suzanne', 'Collins'),
+    ('George', 'Orwell');
 
 -- categories
 insert into categories (name)
@@ -74,7 +76,8 @@ insert into publishers (name)
 values
     ('Little, Brown and Company'),
     ('Bloomsbury'),
-    ('Arthur A. Levine Books')
+    ('Arthur A. Levine Books'),
+    ('Scholastic Press')
     ;
 
 -- books
@@ -83,9 +86,24 @@ values
     ('The Catcher in the Rye', '1951-07-16', 1, 1, 1),
     ('Harry Potter and the Chamber of Secrets', '1998-07-02', 2, 2, 2),
     ('Fantastic Beasts and Where to Find Them', '2001-03-01', 2, 4, 3),
-    ('The Casual Vacancy', '2012-09-27', 2, 5, 1)
+    ('The Casual Vacancy', '2012-09-27', 2, 5, 1),
+    ('The Hunger Games', '2008-09-14', 3, 3, 4),
+    ('The Lightning Thief', '2005-05-01', 2, 2, 2),
+    ('The Golden Compass', '1995-07-04', 1, 1, 1),
+    ('1984', '1949-06-08', 1, 3, 1),
+    ('Animal Farm', '1945-08-17', 1, 3, 1)
     ;
 
+-- members
+insert into members (first_name, last_name, email, dob, phone)
+values
+    ('Alice', 'Johnson', 'alice.johnson@example.com', '1985-06-15', '555-1234'),
+    ('Bob', 'Smith', 'bob.smith@example.com', '1990-09-22', '555-5678'),
+    ('Charlie', 'Brown', 'charlie.brown@example.com', '1978-03-11', '555-8765'),
+    ('Diana', 'Miller', 'diana.miller@example.com', '2000-02-28', '555-3456'),
+    ('Eve', 'Wilson', 'eve.wilson@example.com', '1989-12-04', '555-6543'),
+    ('Frank', 'Taylor', 'frank.taylor@example.com', '1995-01-17', '555-4321');
 
 -- count
-select count(id) from books;
+select count(id) as total_numbers_of_books from books;
+select title as the_newest_book from books where publish_date = (select max(publish_date) from books); 
