@@ -46,7 +46,7 @@ create table books(
 create table loans(
     id serial primary key,
     loan_date date not null,
-    due_date date not null,
+    due_date date ,
     members_id int not null,
     books_id int not null,
     foreign key (members_id) references members(id) on delete set null,
@@ -104,6 +104,23 @@ values
     ('Eve', 'Wilson', 'eve.wilson@example.com', '1989-12-04', '555-6543'),
     ('Frank', 'Taylor', 'frank.taylor@example.com', '1995-01-17', '555-4321');
 
--- count
+--loans
+CREATE OR REPLACE FUNCTION calculate_due_date(loan_date DATE)
+RETURNS DATE AS $$
+BEGIN
+    RETURN loan_date + INTERVAL '21 days'; 
+END;
+$$ LANGUAGE plpgsql;
+
+insert into loans (loan_date, members_id, books_id)
+values
+    ('2025-01-10', 1, 8),
+    ('2025-01-12', 5, 3),
+    ('2025-01-15', 6, 6)
+    ;
+UPDATE loans
+SET due_date = calculate_due_date(loan_date);
+
+-- calculations
 select count(id) as total_numbers_of_books from books;
 select title as the_newest_book from books where publish_date = (select max(publish_date) from books); 
