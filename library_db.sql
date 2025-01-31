@@ -77,8 +77,7 @@ values
     ('Little, Brown and Company'),
     ('Bloomsbury'),
     ('Arthur A. Levine Books'),
-    ('Scholastic Press')
-    ;
+    ('Scholastic Press');
 
 -- books
 insert into books (title, publish_date, authors_id, categories_id, publishers_id)
@@ -91,8 +90,7 @@ values
     ('The Lightning Thief', '2005-05-01', 2, 2, 2),
     ('The Golden Compass', '1995-07-04', 1, 1, 1),
     ('1984', '1949-06-08', 1, 3, 1),
-    ('Animal Farm', '1945-08-17', 1, 3, 1)
-    ;
+    ('Animal Farm', '1945-08-17', 1, 3, 1);
 
 -- members
 insert into members (first_name, last_name, email, dob, phone)
@@ -102,7 +100,7 @@ values
     ('Charlie', 'Brown', 'charlie.brown@example.com', '1978-03-11', '555-8765'),
     ('Diana', 'Miller', 'diana.miller@example.com', '2000-02-28', '555-3456'),
     ('Eve', 'Wilson', 'eve.wilson@example.com', '1989-12-04', '555-6543'),
-    ('Frank', 'Taylor', 'frank.taylor@example.com', '1995-01-17', '555-4321');54
+    ('Frank', 'Taylor', 'frank.taylor@example.com', '1995-01-17', '555-4321');
 
 --loans
 CREATE OR REPLACE FUNCTION calculate_due_date(loan_date DATE)
@@ -122,7 +120,7 @@ values
 UPDATE loans
 SET due_date = calculate_due_date(loan_date);
 
--- 
+
 -- numbers of book 
 select count(id) as total_numbers_of_books from books;
 
@@ -160,7 +158,12 @@ on books.categories_id = categories.id
 where categories.id = 5
 order by books.title;
 
--- Total books still in the library 
+-- books still in the library 
+select b.title as books_avalible_to_borrow
+from books b
+left join loans l
+on b.id = l.books_id
+where l.books_id is null;
 
 -- Detail of the loans
 select l.loan_date as loan_started_date,
