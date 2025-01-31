@@ -102,7 +102,7 @@ values
     ('Charlie', 'Brown', 'charlie.brown@example.com', '1978-03-11', '555-8765'),
     ('Diana', 'Miller', 'diana.miller@example.com', '2000-02-28', '555-3456'),
     ('Eve', 'Wilson', 'eve.wilson@example.com', '1989-12-04', '555-6543'),
-    ('Frank', 'Taylor', 'frank.taylor@example.com', '1995-01-17', '555-4321');
+    ('Frank', 'Taylor', 'frank.taylor@example.com', '1995-01-17', '555-4321');54
 
 --loans
 CREATE OR REPLACE FUNCTION calculate_due_date(loan_date DATE)
@@ -116,11 +116,47 @@ insert into loans (loan_date, members_id, books_id)
 values
     ('2025-01-10', 1, 8),
     ('2025-01-12', 5, 3),
-    ('2025-01-15', 6, 6)
+    ('2025-01-15', 6, 6),
+    ('2025-01-15', 6, 7),
     ;
 UPDATE loans
 SET due_date = calculate_due_date(loan_date);
 
--- calculations
+-- numbers of book 
 select count(id) as total_numbers_of_books from books;
+
+--the newest book in the library
 select title as the_newest_book from books where publish_date = (select max(publish_date) from books); 
+
+-- books in each category
+select books.title as Fantacy_Books
+from books join categories
+on books.categories_id = categories.id
+where categories.id = 1
+order by books.title;
+
+select books.title as Science_Fiction_Books
+from books join categories
+on books.categories_id = categories.id
+where categories.id = 2
+order by books.title;
+
+select books.title as Dystopian_Books
+from books join categories
+on books.categories_id = categories.id
+where categories.id = 3
+order by books.title;
+
+select books.title as Advanture_Books
+from books join categories
+on books.categories_id = categories.id
+where categories.id = 4
+order by books.title;
+
+select books.title as Fiction_Books
+from books join categories
+on books.categories_id = categories.id
+where categories.id = 5
+order by books.title;
+
+-- Total books still in the library 
