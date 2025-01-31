@@ -122,6 +122,7 @@ values
 UPDATE loans
 SET due_date = calculate_due_date(loan_date);
 
+-- 
 -- numbers of book 
 select count(id) as total_numbers_of_books from books;
 
@@ -160,3 +161,19 @@ where categories.id = 5
 order by books.title;
 
 -- Total books still in the library 
+
+-- Detail of the loans
+select l.loan_date as loan_started_date,
+l.due_date as loan_due_date,
+m.first_name as first_name,
+m.last_name as last_name,
+m.email as email,
+m.phone as phone_number,
+b.title as borrowed_book
+from loans l
+join members m on l.members_id = m.id
+join books b on l.books_id = b.id
+order by loan_started_date;
+
+
+
