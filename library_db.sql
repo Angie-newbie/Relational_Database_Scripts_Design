@@ -116,8 +116,7 @@ values
     ('2025-01-10', 1, 8),
     ('2025-01-12', 5, 3),
     ('2025-01-15', 6, 6),
-    ('2025-01-15', 6, 7),
-    ;
+    ('2025-01-15', 6, 7);
 update loans
 set due_date = calculate_due_date(loan_date);
 
@@ -144,7 +143,7 @@ from loans l
 left join books b
 on l.books_id = b.id
 group by b.title
-order by total_times_borrowed;
+order by total_times_borrowed desc;
 
 -- books in each category
 select books.title as Fantacy_Books
