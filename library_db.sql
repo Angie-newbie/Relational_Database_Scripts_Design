@@ -16,7 +16,7 @@ create table members (
     id serial primary key,
     first_name varchar(50) not null,
     last_name varchar(50) not null,
-    email varchar(150) not null,
+    email varchar(150) not null unique,
     dob date,
     phone varchar(20) not null
 );
@@ -36,7 +36,7 @@ create table books(
     title varchar (100) not null,
     publish_date date,
     authors_id int not null,
-    categories_id int not null,
+    categories_id int,
     publishers_id int not null,
     foreign key (authors_id) references authors(id),
     foreign key (categories_id) references categories(id) on delete set null,
@@ -69,7 +69,8 @@ values
     ('Science Fiction'),
     ('Dystopian'),
     ('Advanture'),
-    ('Fiction');
+    ('Fiction'),
+    ('Kids');
 
 -- publishers
 insert into publishers (name)
@@ -103,12 +104,12 @@ values
     ('Frank', 'Taylor', 'frank.taylor@example.com', '1995-01-17', '555-4321');
 
 --loans
-CREATE OR REPLACE FUNCTION calculate_due_date(loan_date DATE)
-RETURNS DATE AS $$
-BEGIN
-    RETURN loan_date + INTERVAL '21 days'; 
-END;
-$$ LANGUAGE plpgsql;
+create or replace function calculate_due_date(loan_date date)
+returns date as $$
+begin
+    return loan_date + INTERVAL '21 days'; 
+end;
+$$ language plpgsql;
 
 insert into loans (loan_date, members_id, books_id)
 values
@@ -117,15 +118,33 @@ values
     ('2025-01-15', 6, 6),
     ('2025-01-15', 6, 7),
     ;
-UPDATE loans
-SET due_date = calculate_due_date(loan_date);
+update loans
+set due_date = calculate_due_date(loan_date);
 
+--Delete category if no books
+delete from categories
+where id in (
+    select categories.id from categories c
+    left join books b on c.id = b.categories_id
+    where b.id is null
+);
 
 -- numbers of book 
 select count(id) as total_numbers_of_books from books;
 
 --the newest book in the library
 select title as the_newest_book from books where publish_date = (select max(publish_date) from books); 
+
+--the oldest book
+select title as the_oldest_book from books where publish_date = (select min(publish_date) from books);
+
+--the most popular book
+select b.title, count(l.books_id) as total_times_borrowed
+from loans l 
+left join books b
+on l.books_id = b.id
+group by b.title
+order by total_times_borrowed;
 
 -- books in each category
 select books.title as Fantacy_Books
